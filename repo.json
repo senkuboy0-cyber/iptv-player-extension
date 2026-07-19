@@ -1,0 +1,8 @@
+{
+  "name": "IPTV Player Provider",
+  "description": "IPTV Player - Live TV Streaming Extension",
+  "manifestVersion": 1,
+  "pluginLists": [
+    "https://raw.githubusercontent.com/senkuboy0-cyber/iptv-player-extension/builds/plugins.json"
+  ]
+}
