@@ -6,7 +6,7 @@ cloudstream {
     // All of these properties are optional, you can safely remove them
     language = "hi"
     description = "IPTV Player"
-    authors = listOf("Phisher98,Adippe")
+    authors = listOf("senkuboy0-cyber")
 
     /**
      * Status int as the following:
@@ -20,7 +20,7 @@ cloudstream {
         "Live",
     )
 
-    iconUrl = "https://raw.githubusercontent.com/phisher98/TVVVV/refs/heads/main/Icons/IPTV.png"
+    iconUrl = "https://raw.githubusercontent.com/senkuboy0-cyber/Iptv/refs/heads/main/Icons/IPTV.png"
 
     isCrossPlatform = true
 }
