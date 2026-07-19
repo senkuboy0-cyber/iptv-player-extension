@@ -1,0 +1,25 @@
+[
+    {
+        "url": "https://raw.githubusercontent.com/senkuboy0-cyber/iptv-player-extension/builds/IPTVPlayer.cs3",
+        "status": 1,
+        "version": 7,
+        "name": "IPTVPlayer",
+        "internalName": "IPTVPlayer",
+        "authors": [
+            "senkuboy0-cyber"
+        ],
+        "description": "IPTV Player",
+        "fileSize": 19374,
+        "repositoryUrl": "https://github.com/senkuboy0-cyber/iptv-player-extension",
+        "language": "hi",
+        "tvTypes": [
+            "Live"
+        ],
+        "iconUrl": "https://raw.githubusercontent.com/phisher98/TVVVV/refs/heads/main/Icons/IPTV.png",
+        "apiVersion": 1,
+        "fileHash": "sha256-b334bd91b8cf0228e180da0df2b936f5be331fbc36f4f21f862138d1b0339a99",
+        "jarFileSize": 77450,
+        "jarUrl": "https://raw.githubusercontent.com/senkuboy0-cyber/iptv-player-extension/builds/IPTVPlayer.jar",
+        "jarHash": "sha256-eb2afd846603084c00bcd5d077c3ca191b716eba92bdc756bc69d77cae085cd1"
+    }
+]
