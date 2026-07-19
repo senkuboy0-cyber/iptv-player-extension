@@ -32,14 +32,14 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build with Gradle
-        run: ./gradlew :IPTVPlayer:build
+      - name: Build CloudStream Plugin (.cs3)
+        run: ./gradlew :IPTVPlayer:make
 
       - name: Upload build artifacts
         uses: actions/upload-artifact@v4
         with:
           name: iptv-player-extension
-          path: IPTVPlayer/build/outputs/aar/*.aar
+          path: IPTVPlayer/build/*.cs3
           retention-days: 1
 
       - name: Create Release
@@ -53,7 +53,7 @@ jobs:
           draft: false
           prerelease: false
           files: |
-            IPTVPlayer/build/outputs/aar/*.aar
+            IPTVPlayer/build/*.cs3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -61,10 +61,10 @@ jobs:
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           mkdir -p builds
-          cp IPTVPlayer/build/outputs/aar/*.aar builds/
+          cp IPTVPlayer/build/*.cs3 builds/
           cd builds
           echo '[' > plugins.json
-          for file in *.aar; do
+          for file in *.cs3; do
             echo "  {\"name\": \"IPTV Player\", \"version\": \"1.0.0\", \"url\": \"https://github.com/senkuboy0-cyber/iptv-player-extension/releases/download/build-${{ github.run_number }}/$file\"}," >> plugins.json
           done
           sed -i '$ s/,$//' plugins.json
