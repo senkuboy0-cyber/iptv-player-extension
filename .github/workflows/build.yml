@@ -1,0 +1,76 @@
+name: Build and Release
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+          cache: 'gradle'
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew :IPTVPlayer:build
+
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: iptv-player-extension
+          path: IPTVPlayer/build/outputs/aar/*.aar
+          retention-days: 1
+
+      - name: Create Release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-${{ github.run_number }}
+          name: Build ${{ github.run_number }}
+          body: |
+            Auto-generated build from commit ${{ github.sha }}
+          draft: false
+          prerelease: false
+          files: |
+            IPTVPlayer/build/outputs/aar/*.aar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Update plugin index
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p builds
+          cp IPTVPlayer/build/outputs/aar/*.aar builds/
+          cd builds
+          echo '[' > plugins.json
+          for file in *.aar; do
+            echo "  {\"name\": \"IPTV Player\", \"version\": \"1.0.0\", \"url\": \"https://github.com/senkuboy0-cyber/iptv-player-extension/releases/download/build-${{ github.run_number }}/$file\"}," >> plugins.json
+          done
+          sed -i '$ s/,$//' plugins.json
+          echo ']' >> plugins.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan builds
+          git add plugins.json
+          git commit -m "Update plugins.json [skip ci]"
+          git push origin builds --force
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
